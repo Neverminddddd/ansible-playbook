@@ -5,3 +5,8 @@
 ![Screenshot 2](ansible%20process1.png)
 ![Screenshot 3](ansible%20process2.png)
 ![Screenshot 4](ansible%20process3.png)
+
+Дерево playbook
+![Screenshot 5](project%20tree.png)
+
+Ответы на вопросы:
