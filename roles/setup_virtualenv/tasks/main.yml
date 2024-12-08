@@ -1,0 +1,25 @@
+---
+- name: Install Python and pip
+  yum:
+    name:
+      - python3
+      - python3-pip
+    state: present
+
+- name: Install virtualenv using pip
+  pip:
+    name: virtualenv
+    state: present
+
+- name: Create virtual environment
+  command: python3 -m venv /home/bucklequick/flaskenv
+  become_user: bucklequick
+
+- name: Install Flask and dependencies
+  pip:
+    name:
+      - Flask
+      - psycopg2-binary
+    virtualenv: /home/bucklequick/flaskenv
+  become_user: bucklequick
+

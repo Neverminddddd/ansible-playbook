@@ -1,0 +1,42 @@
+---
+- name: Create Flask application directory
+  file:
+    path: /home/bucklequick/flaskapp
+    state: directory
+    owner: bucklequick
+    group: bucklequick
+
+- name: Create Flask application
+  copy:
+    dest: /home/bucklequick/flaskapp/app.py
+    content: |
+      from flask import Flask
+      app = Flask(__name__)
+
+      @app.route('/')
+      def hello_world():
+          return 'Hello, World!'
+
+      if __name__ == '__main__':
+          app.run(host='0.0.0.0', port=5000)
+
+- name: Create systemd service for Flask app
+  copy:
+    dest: /etc/systemd/system/flaskapp.service
+    content: |
+      [Unit]
+      Description=Flask Application
+
+      [Service]
+      WorkingDirectory=/home/bucklequick/flaskapp
+      ExecStart=/home/bucklequick/flaskenv/bin/python /home/bucklequick/flaskapp/app.py
+      Restart=always
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Enable and start Flask app service
+  systemd:
+    name: flaskapp
+    enabled: yes
+    state: started

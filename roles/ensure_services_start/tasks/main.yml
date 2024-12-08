@@ -1,0 +1,12 @@
+---
+- name: Ensure all services are enabled and started
+  systemd:
+    name: "{{ item }}"
+    enabled: yes
+    state: started
+  with_items:
+    - sshd
+    - postgresql
+    - flaskapp
+    - nginx
+    - tcp-forwarding

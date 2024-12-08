@@ -1,0 +1,7 @@
+---
+- name: Allow bucklequick to have passwordless sudo
+  lineinfile:
+    path: /etc/sudoers.d/bucklequick
+    line: 'bucklequick ALL=(ALL) NOPASSWD: ALL'
+    create: yes
+    validate: 'visudo -cf %s'

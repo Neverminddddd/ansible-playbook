@@ -1,0 +1,14 @@
+---
+- name: Setup server
+  hosts: all
+  become: yes
+  roles:
+    - create_users
+    - setup_ssh
+    - setup_sudo
+    - setup_tcp_forwarding
+    - setup_virtualenv
+    - setup_postgresql
+    - setup_flask
+    - setup_nginx
+    - ensure_services_start

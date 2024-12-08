@@ -1,0 +1,47 @@
+---
+- name: Install PostgreSQL
+  yum:
+    name: postgresql-server
+    state: present
+
+- name: Install psycopg2
+  yum:
+    name: python3-psycopg2
+    state: present
+
+- name: Initialize PostgreSQL database
+  command: /usr/bin/postgresql-setup initdb
+  args:
+    creates: /var/lib/pgsql/data/postgresql.conf
+
+- name: Start and enable PostgreSQL service
+  systemd:
+    name: postgresql
+    enabled: yes
+    state: started
+
+- name: Create PostgreSQL database
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: flask
+    state: present
+
+- name: Create PostgreSQL user
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: flask
+    password: flask
+    state: present
+
+- name: Grant privileges on the database to the user
+  become: yes
+  become_user: postgres
+  postgresql_privs:
+    db: flask
+    role: flask
+    objs: ALL_IN_SCHEMA
+    privs: ALL
+    state: present
+

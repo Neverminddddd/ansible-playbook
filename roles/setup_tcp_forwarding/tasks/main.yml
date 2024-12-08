@@ -1,0 +1,31 @@
+---
+- name: Install socat
+  yum:
+    name: socat
+    state: present
+
+- name: Setup TCP forwarding
+  copy:
+    dest: /etc/systemd/system/tcp-forwarding.service
+    content: |
+      [Unit]
+      Description=TCP Forwarding
+
+      [Service]
+      ExecStart=/usr/bin/socat TCP-LISTEN:8080,fork TCP:ya.ru:443
+      Restart=always
+      User=nobody
+      Group=nobody
+
+      [Install]
+      WantedBy=multi-user.target
+
+- name: Reload systemd to recognize the new service
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start TCP forwarding service
+  systemd:
+    name: tcp-forwarding
+    enabled: yes
+    state: started

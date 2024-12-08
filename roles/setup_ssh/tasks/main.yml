@@ -1,0 +1,24 @@
+---
+- name: Ensure SSH key for bucklequick
+  authorized_key:
+    user: bucklequick
+    state: present
+    key: "{{ lookup('file', '/home/bucklequick/.ssh/id_rsa.pub') }}"
+
+- name: Disable password authentication for bucklequick
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+    state: present
+  notify:
+    - Restart sshd
+
+- name: Deny SSH access for developer
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^DenyUsers'
+    line: 'DenyUsers developer'
+    state: present
+  notify:
+    - Restart sshd

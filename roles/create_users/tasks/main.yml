@@ -1,0 +1,12 @@
+---
+- name: Create user bucklequick
+  user:
+    name: bucklequick
+    shell: /bin/bash
+    groups: sudo
+    append: yes
+
+- name: Create user developer
+  user:
+    name: developer
+    shell: /bin/bash
